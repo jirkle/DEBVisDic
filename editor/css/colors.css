@@ -1,0 +1,59 @@
+.BLACK{
+  color: #000000;
+}
+
+.WHITE{
+  color: #FFFFFF;
+}
+
+.RED{
+  color: #FF0000;
+}
+
+.GREEN{
+  color: #00FF00;
+}
+
+.BLUE{
+  color: #0000FF;
+}
+
+.CYAN{
+  color: #00FFFF;
+}
+
+.MAGNETA{
+  color: #FF00FF;
+}
+
+.YELLOW{
+  color: #FFFF00;
+}
+
+.GRAY{
+  color: #7F7F7F;
+}
+
+.DARK_RED{
+  color: #7F0000;
+}
+
+.DARK_GREEN{
+  color: #007F00;
+}
+
+.DARK_BLUE{
+  color: #00007F;
+}
+
+.DARK_CYAN{
+  color: #007F7F;
+}
+
+.DARK_MAGNETA{
+  color: #7F007F;
+}
+
+.DARK_YELLOW{
+  color: #7F7F00;
+}
