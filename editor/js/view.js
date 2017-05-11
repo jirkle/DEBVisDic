@@ -56,7 +56,7 @@ View.openDictionary = function(code, name, arrayOfTabs, coords) {
       "<input id='searchButton' onclick='Controller.search()' type='button' value='Search'>" +
       "<input id='searchAllButton' onclick='Controller.searchAll()' type='button' value='Search in all'>" +
       "<br>" +
-      "<select id='scrollcontent' size='2' onchange=\"Controller.scrollableOnClick(\'" + arrayOfTabs[0] + "\')\">" +
+      "<select id='scrollcontent' size='5' onchange=\"Controller.scrollableOnClick(\'" + arrayOfTabs[0] + "\')\">" +
       "</select>");
     var count = 0;
     for(index in arrayOfTabs){

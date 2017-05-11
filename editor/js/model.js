@@ -395,6 +395,7 @@ Model.editSaveClick = function(id_textbox_id, serverAddress) {
         }
         log("cdb_lu.js:editSaveClick():end");
       });
+   $("#scrollcontent").change();
 }
 
 Model.editClearClick = function() {
