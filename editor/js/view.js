@@ -49,7 +49,7 @@ View.openDictionary = function(code, name, arrayOfTabs, coords) {
   if(View.windowObjectReference_[code] == null || View.windowObjectReference_[code].closed){
     View.windowObjectReference_[code] = window.open("about:blank", code, View.strWindowFeatures_);
     View.windowObjectReference_[code].moveTo(coords.x, coords.y);
-    View.windowObjectReference_[code].document.write("<div style='position:fixed; width:98.5%; height:150px' id='header'>" +
+    View.windowObjectReference_[code].document.write("<div class='header' id='header'>" +
       "<div style='display: none' id='code'>" + code + "</div>" +
       "<div style='display: none' id='serverDictAddress'>" + serverAddress + "</div>" +
       "<input id='searchText' type='text' onkeypress='Controller.keypressed(event)'>" +
@@ -73,7 +73,7 @@ View.openDictionary = function(code, name, arrayOfTabs, coords) {
       count++;
       View.windowObjectReference_[code].document.write("" +
         "<div class='tab' id='" + tabName + "' style='display: " +
-        (count === 1 ? "block" : "none") + "; width:98.5%; position:absolute; bottom:30px; top:165px; overflow:auto'>" +
+        (count === 1 ? "block" : "none") + ";'>" +
         "</div>");
     }
     View.windowObjectReference_[code].document.write("</div>");
@@ -172,6 +172,7 @@ View.activateTab = function(pageId, content, callback) {
 View.showSearch = function(labels) {
   $("#scrollcontent").empty();
   if(labels.length === 0){
+    $("#scrollcontent").change();
     return;
   }
   var count = 0;
@@ -232,4 +233,3 @@ View.getCoordinations = function(code) {
   }
   return dict;
 }
-

@@ -676,13 +676,17 @@ Model.searchInAnotherDictionary_ = function(dicts, sourceCode, targetCode) {
   var sourceId;
   if(typeof Model.queryList_[Model.selectedOption_] !== "undefined"){
     sourceId = Model.queryList_[Model.selectedOption_].value;
+    var val = dicts[targetShortcut].key + '=' + sourceCode + ':' + sourceId + ':' + dicts[sourceShortcut].key;
+    if(window.opener.Model.dictsToOpen_[targetCode]){
+      window.opener.View.windowObjectReference_[targetCode].document.getElementById('searchText').value = val;
+      window.opener.View.windowObjectReference_[targetCode].Controller.search();
+    }
   }else{
+    if(window.opener.Model.dictsToOpen_[targetCode]){
+      window.opener.View.windowObjectReference_[targetCode].document.getElementById('searchText').value = "";
+      window.opener.View.windowObjectReference_[targetCode].Controller.search();
+    }
     return '';
-  }
-  var val = dicts[targetShortcut].key + '=' + sourceCode + ':' + sourceId + ':' + dicts[sourceShortcut].key;
-  if(window.opener.Model.dictsToOpen_[targetCode]){
-    window.opener.View.windowObjectReference_[targetCode].document.getElementById('searchText').value = val;
-    window.opener.View.windowObjectReference_[targetCode].Controller.search();
   }
 }
 

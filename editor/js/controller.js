@@ -89,7 +89,7 @@ Controller.searchAll = function() {
 
 Controller.tabClick = function(tabId) {
   var id = '';
-  $('#Edit').attr('class', '');
+  $('#Edit').attr('class', 'tab');
   $('#scrollcontent')[0].setAttribute("onchange", 'Controller.scrollableOnClick("' + tabId + '")');
   View.spinnerShow('left_status_text');
   var value = $("#searchText").val();
@@ -117,4 +117,3 @@ if (window.opener == null) {
 } else {
   setTimeout(Controller.initDict, 3000);
 }
-
