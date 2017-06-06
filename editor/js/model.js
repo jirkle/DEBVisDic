@@ -10,6 +10,8 @@ Model.dictsToOpen_ = {};
 
 Model.serverAddress_ = '';
 
+Model.iliServerAddress_ = 'https://localhost:8443/api/ili';
+
 Model.coordinations = {};
 //---
 Model.queryList_ = {};
@@ -237,8 +239,9 @@ Model.getPreviewContent_ = function(id, tabId) {
   }
   $.get(Model.serverAddress_ + "/" + Model.code_ + "?action=runQuery&query=" + id + "&outtype=html",
     function(data){
-      if(!Model.abort_){
+      if(!Model.abort_) {
         View.activateTab(tabId, data);
+        Model.getIliID(id);
         View.writeToLeftStatus('Querying a dictionary is complete');
       }else{
         View.writeToLeftStatus('Querying a dictionary was aborted');
@@ -803,3 +806,22 @@ Model.saveCoordinations = function() {
   });
 }
 
+Model.getIliID = function(id){
+  id = id.toLowerCase();
+  if(id.startsWith("eng")) {
+      id = id.substring(3);
+      version = id.substring(0, 2);
+      id = id.substring(3);
+      $.ajax({
+          method: "GET",
+          url: Model.iliServerAddress_ +  "tab" + version + "?id=" + id,
+          crossDomain: true
+        }).done(function( msg ) {
+          if(msg != ""){
+
+            $("#Preview > span:nth-child(4)").after("<span class='BLUE'> ILI ID: </span><span class='RED'>"+ msg + "</span>");
+
+          }
+        });
+  }
+}
