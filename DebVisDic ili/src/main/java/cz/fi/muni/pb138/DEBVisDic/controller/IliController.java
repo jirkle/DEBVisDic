@@ -34,33 +34,23 @@ public class IliController {
     IliService iliService;
 
     /**
-     * Controller method for getting ili from .tab file saved on server
+     * Controller method for getting ili from ili-map-pwn30.tab file saved on server
      *
-     * @param id id we are looking for
+     * @param id id we are looking for as string value
      * @return string value of ILI
-     * @throws IOException IOException is thrown, when something went wrong
+     * @throws IOException IOException is thrown, when something went wrong (e.g. file could not be opened)
      */
     @RequestMapping(value="/tab30", method = RequestMethod.GET)
     public String getIliTab30(@NotEmpty(message = "id cannot be empty") @RequestParam(value = "id") String id) throws IOException {
-        String result = "Nope";
-        id = id.toLowerCase();
-        /**
-        if (id.startsWith("eng")) {
-            id = id.substring(3);
-            String version = id.substring(0, 2);
-            id = id.length() > 10 ? id.substring(id.length() - 10) : id;
-
-            result = iliService.getIliTab30(id);
-        }**/
-        return result = iliService.getIliTab30(id);
+        return iliService.getIliTab30(id);
     }
 
     /**
-     * Controller method for getting ili from .tab file saved on server
+     * Controller method for getting ili from ili-map-pwn31.tab file saved on server
      *
      * @param id id we are looking for
      * @return string value of ILI
-     * @throws IOException IOException is thrown, when something went wrong
+     * @throws IOException IOException is thrown, when something went wrong (e.g. file could not be opened)
      */
     @RequestMapping(value="tab31", method = RequestMethod.GET)
     public String getIliTab31(@NotEmpty(message = "id cannot be empty") @RequestParam(value = "id") String id) throws IOException {
@@ -69,11 +59,11 @@ public class IliController {
 
 
     /**
-     * Controller method for getting ili from .tab file saved on server
+     * Controller method for getting ili from ili-map-wn30.ttl file saved on server
      *
-     * @param id id we are looking for
+     * @param id id we are looking for as string
      * @return string value of ILI
-     * @throws IOException IOException is thrown, when something went wrong
+     * @throws IOException IOException is thrown, when something went wrong (e.g. file could not be opened)
      */
     @RequestMapping(value="ttl30", method = RequestMethod.GET)
     public String getIliTtl30(@NotEmpty(message = "id cannot be empty") @RequestParam(value = "id") String id) throws IOException {
@@ -81,11 +71,11 @@ public class IliController {
     }
 
     /**
-     * Controller method for getting ili from .tab file saved on server
+     * Controller method for getting ili from ili-map-wn31.ttl file saved on server
      *
      * @param id id we are looking for
      * @return string value of ILI
-     * @throws IOException IOException is thrown, when something went wrong
+     * @throws IOException IOException is thrown, when something went wrong (e.g. file could not be opened)
      */
     @RequestMapping(value="ttl31", method = RequestMethod.GET)
     public String getIliTtl31(@NotEmpty(message = "id cannot be empty") @RequestParam(value = "id") String id) throws IOException {
@@ -93,11 +83,11 @@ public class IliController {
     }
 
     /**
-     * Controller method for getting ili from .ttl file saved on server
+     * Controller method for getting ili from ili-map-wn13.ttl file saved on server
      *
      * @param id id we are looking for
      * @return string value of ILI
-     * @throws IOException IOException is thrown, when something went wrong
+     * @throws IOException IOException is thrown, when something went wrong (e.g. file could not be opened)
      */
     @RequestMapping(value="ttl13", method = RequestMethod.GET)
     public String getIliTtl13(@NotEmpty(message = "id cannot be empty") @RequestParam(value = "id") String id) throws IOException {
@@ -109,7 +99,7 @@ public class IliController {
      *
      * @param id id we are looking for
      * @return string value of ILI
-     * @throws IOException IOException is thrown, when something went wrong
+     * @throws IOException IOException is thrown, when something went wrong (e.g. file could not be opened)
      */
     @RequestMapping(value="ttlmap", method = RequestMethod.GET)
     public String getIliTtlMap(@NotEmpty(message = "id cannot be empty") @RequestParam(value = "id") String id) throws IOException {
@@ -117,11 +107,11 @@ public class IliController {
     }
 
     /**
-     * Controller method for getting ili from .ttl file saved on server
+     * Controller method for getting ili from changes-in-wn31.csv file saved on server
      *
      * @param id id we are looking for
      * @return string value of ILI
-     * @throws IOException IOException is thrown, when something went wrong
+     * @throws IOException IOException is thrown, when something went wrong (e.g. file could not be opened)
      */
     @RequestMapping(value="csv", method = RequestMethod.GET)
     public String getIliCsv(@NotEmpty(message = "id cannot be empty") @RequestParam(value = "id") String id) throws IOException {
@@ -129,11 +119,11 @@ public class IliController {
     }
 
     /**
-     * Controller method for getting ili from .ttl file saved on server
+     * Controller method for getting ili from ili.ttl file saved on server
      *
      * @param id id we are looking for
      * @return string value of ILI
-     * @throws IOException IOException is thrown, when something went wrong
+     * @throws IOException IOException is thrown, when something went wrong (e.g. file could not be opened)
      */
     @RequestMapping(value="mainttl", method = RequestMethod.GET)
     public String getMainTtl(@NotEmpty(message = "id cannot be empty") @RequestParam(value = "id") String id) throws IOException {
