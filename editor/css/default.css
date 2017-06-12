@@ -10,15 +10,8 @@ input {
     margin-right: 10px;
 }
 
-div#partOfSpeech {
-    float: left;
-}
-
-div#lexicated {}
-
-div#lexicated {
-    /* clear: both; */
-    margin-top: 25px;
+#partOfSpeech b {
+  margin-right:10px;
 }
 
 ul#koren_ILR {
@@ -53,7 +46,41 @@ div#XML {
     height:150px
 }
 
-<!-- Konec úprav -->
+.plus, .minus, .hitarea-plus, .hitarea-minus {
+  margin-right: 10px;
+}
+
+li {
+  margin: 4px 0;
+}
+
+.toolbar {
+  position: fixed;
+  background-color: white;
+  height: 30px;
+}
+
+.editArea{
+  margin-top: 30px;
+}
+
+.editrow{
+  padding-top:10px;
+  padding-bottom:10px;
+  border-width: 0px 0px 1px 0px;
+  border-style: solid;
+  border-color: #dedede;
+}
+
+#right_status_text {
+  margin-right: 10px !important;
+}
+
+#left_status_text {
+  margin-left: 10px !important;
+}
+
+<!-- Konec uprav -->
 
 hr {
     clear: both;
@@ -74,30 +101,30 @@ hr {
 }
 
 .tabButton {
-	background-color:#8f8f8f;
-	border-top-left-radius: 5px;
-	border-top-right-radius: 5px;
-	border-bottom-right-radius:0px;
-	border-bottom-left-radius:0px;
-	text-indent:0;
-	border:1px solid #dcdcdc;
-	display:inline-block;
-	color:#ffffff;
-	font-family:Arial;
-	font-size:15px;
-	font-weight:normal;
-	font-style:normal;
-	height:22px;
-	line-height:22px;
-	width:86px;
-	text-decoration:none;
-	text-align:center;
-	margin-right: 0px;
+  background-color:#8f8f8f;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius:0px;
+  border-bottom-left-radius:0px;
+  text-indent:0;
+  border:1px solid #dcdcdc;
+  display:inline-block;
+  color:#ffffff;
+  font-family:Arial;
+  font-size:15px;
+  font-weight:normal;
+  font-style:normal;
+  height:22px;
+  line-height:22px;
+  width:86px;
+  text-decoration:none;
+  text-align:center;
+  margin-right: 0px;
 }.tabButton:hover {
-	background-color:#dfdfdf;
+  background-color:#dfdfdf;
 }.tabButton:active {
-	position:relative;
-	top:1px;
+  position:relative;
+  top:1px;
 }
 
 .loginForm {

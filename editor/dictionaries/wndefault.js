@@ -1,11 +1,20 @@
 var partOfSpeech_select = ['a', 'b', 'n', 'v'];
 var balkanet_select = ['', '1', '2', '3'];
+var relations_select;
 
-function showEditHTML(nodeId, data){
-  if(typeof nodeId === 'undefined'){
+function showEditHTML(nodeId, data) {
+  if(typeof nodeId === 'undefined') {
     return;
   }
-  $("#" + nodeId).html("" +
+  $.ajax({
+          method: "GET",
+          url: Model.serverAddress_ + "/" + "wncztest?action=getTypes",
+          async: false
+        }).done(function( msg ) {
+        	relations_select = JSON.parse(msg);
+        	relations_select.splice(0, 0, "");
+        });
+  $("#" + nodeId).html("<div class='toolbar'>" +
   "<input type='text' style='display: none' id='id'>" +
   "<input type='button' value='New' onclick='Model.editNewClick()'>" +
   "<input type='button' value='Delete' " +
@@ -13,85 +22,75 @@ function showEditHTML(nodeId, data){
   "<input type='button' value='Save' " +
   "onclick=\"Model.editSaveClick(&#39;id&#39;, &#39;" + $('#serverDictAddress').html() + "&#39;)\">" +
   "<input type='button' value='Clear form' onclick='Model.editClearClick()'>" +
-  "<hr>" +
-  "<div id='partOfSpeech'>" +
-    "<b>Part of Speech</b></br>" +
+  "</div><div class='editArea'>" +
+  "<div class='editrow'><div id='partOfSpeech'>" +
+    "<b>Part of Speech</b>" +
     "<select id='partOfSpeech_select'></select>" +
   "</div>" +
   "<div id='lexicated'>" +
     "<input type='checkbox' value='Not Lexicated' id='lexicated_check_box'>Not Lexicated" +
-  "</div>" +
-  "<hr>" +
-  "<div id='domain'>" +
+  "</div></div>" +
+  "<div class='editrow' id='domain'>" +
     "<b>Domain</b></br>" +
     "<input type='text' id='domain_text'>" +
   "</div>" +
-  "<hr>" +
-  "<div id='sumo'>" +
+  "<div class='editrow' id='sumo'>" +
     "<b>Sumo</b></br>" +
     "<input type='text' id='sumo_text'>" +
     "Type <input type='text' id='sumo_text_type'>" +
   "</div>" +
-  "<hr>" +
-  "<div class='plus' id='button_synonym' " +
+  "<div class='editrow'><div class='plus' id='button_synonym' " +
   "onclick='Model.clickIkon(&#39;synonyms_id&#39;, &#39;button_synonym&#39;)'/>" +
   "<div id='synonyms'>" +
     "<b>Synonyms: Literal, Sense, LNote</b></br>" +
     "<div id='synonyms_id' hidden='true'>" +
       "<input type='button' value='Add' id='last_synonyms' onclick='editSynonymsAdd()'>" +
     "</div>" +
-  "</div>" +
-  "<hr>" +
-  "<div id='definition'>" +
+  "</div></div>" +
+  "<div class='editrow' id='definition'>" +
     "<b>Definition</b></br>" +
     "<input type='text' id='edit_definition'>" +
   "</div>" +
-  "<hr>" +
-  "<div class='plus' id='button_usage' " +
+  "<div class='editrow'><div class='plus' id='button_usage' " +
   "onclick='Model.clickIkon(&#39;usage_id&#39;, &#39;button_usage&#39;)'/>" +
   "<div id='usage'>" +
     "<b>Usage</b></br>" +
     "<div id='usage_id' hidden='true'>" +
       "<input type='button' value='Add' id='last_usage' onclick='editUsageAdd()'>" +
     "</div>" +
-  "</div>" +
-  "<hr>" +
-  "<div class='plus' id='button_relations' " +
+  "</div></div>" +
+  "<div class='editrow'><div class='plus' id='button_relations' " +
   "onclick='Model.clickIkon(&#39;relations_id&#39;, &#39;button_relations&#39;)'/>" +
   "<div id='relations'>" +
     "<b>Relations</b></br>" +
     "<div id='relations_id' hidden='true'>" +
       "<input type='button' value='Add' id='last_relations' onclick='editRelationsAdd()'>" +
     "</div>" +
-  "</div>" +
-  "<hr>" +
-  "<div class='plus' id='button_note' " +
+  "</div></div>" +
+  "<div class='editrow'><div class='plus' id='button_note' " +
   "onclick='Model.clickIkon(&#39;note_id&#39;, &#39;button_note&#39;)'/>" +
   "<div id='note'>" +
     "<b>Note</b></br>" +
     "<div id='note_id' hidden='true'>" +
       "<input type='button' value='Add' id='last_note' onclick='editNoteAdd()'>" +
     "</div>" +
-  "</div>" +
-  "<hr>" +
-  "<div class='plus' id='button_valency' " +
+  "</div></div>" +
+  "<div class='editrow'><div class='plus' id='button_valency' " +
   "onclick='Model.clickIkon(&#39;valency_id&#39;, &#39;button_valency&#39;)'/>" +
   "<div id='valency'>" +
     "<b>Valency</b></br>" +
     "<div id='valency_id' hidden='true'>" +
       "<input type='button' value='Add' id='last_valency' onclick='editValencyAdd()'>" +
     "</div>" +
-  "</div>" +
-  "<hr>" +
-  "<div id='lastEditStamp'>" +
+  "</div></div>" +
+  "<div class='editrow' id='lastEditStamp'>" +
     "Last edit stamp</br>" +
     "<input type='text' disabled='true' id='lastEditStampTextBox'>" +
   "</div>" +
-  "<hr>" +
-  "<div id='balkanet'>" +
+  "<div class='editrow' id='balkanet'>" +
     "In Balkanet Common Set</br>" +
     "<select id='balkanet_select'></select>" +
-  "</div>");
+  "</div></div>");
   setNewId();
   fillSelects()
   if(typeof data !== 'undefined'){
@@ -173,7 +172,7 @@ function editRelationsAdd(left, right){
     "\'" + Model.code_ + "\', \'" + $('#serverDictAddress').html() + "\')\">" +
     "<select id='select_relations_select_left_" + id + "' " +
                "style='width:15px'></select>" +
-    "<input type='text' value='" + right + "' id='relations_select_right_" + id + "'>" +
+    createRelationTypesSelection(id, right) +
     "<input type='button' value='Remove' onclick='editRelationsRemove(" + id + ")'>" +
     "</div>";
   $("#last_relations").before(html);
@@ -428,3 +427,15 @@ function setNewId() {
   $('#id').val('_new_id_')
 }
 
+function createRelationTypesSelection(id, seleted) {
+	var ret = "<select type='text' id='relations_select_right_" + id + "'>";
+	for(var i = 0; i < relations_select.length; i++) {
+		if(seleted == relations_select[i]) {
+			ret += "<option value='" + relations_select[i] + "' selected>" + relations_select[i] + "</option>";
+		} else {
+			ret += "<option value='" + relations_select[i] + "'>" + relations_select[i] + "</option>";
+		}
+	}
+    ret += "</select>";
+    return ret;
+}

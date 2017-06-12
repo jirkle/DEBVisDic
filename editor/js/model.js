@@ -10,7 +10,7 @@ Model.dictsToOpen_ = {};
 
 Model.serverAddress_ = '';
 
-Model.iliServerAddress_ = 'https://localhost:8443/api/ili';
+Model.iliServerAddress_ = '';
 
 Model.coordinations = {};
 //---
@@ -151,14 +151,12 @@ Model.search = function(code, value) {
     log("model.js:Model.search:end");
     return;
   }
-  Model.autoLookUpSearch_ = true;
-  Model.autoLookUpSearch(code, true);
-  View.spinnerShow('searchAllButton');
+    View.spinnerShow('searchAllButton');
   View.writeToLeftStatus('Querying a dictionary for a list of words...');
   $.get(Model.serverAddress_ + "/" + code + "?action=queryList&word=" + encodeURIComponent(value),
       function(data){
         Model.code_ = $("#code").text();
-        if(!Model.abort_){
+        if(!Model.abort_) {
           Model.queryList_ = (typeof data === "string") ? $.parseJSON(data) : data;
           var labels = [];
           for(var label in Model.queryList_){
@@ -169,10 +167,12 @@ Model.search = function(code, value) {
           View.showSearch(labels);
           View.writeToRightStatus(Model.queryList_.length);
           log("model.js:Model.search:end");
-        }else{
+        } else {
           View.writeToLeftStatus('Querying a dictionary for a list of words was aborted');
           Model.abort_ = false;
         }
+        Model.autoLookUpSearch_ = true;
+        Model.autoLookUpSearch(code, true);
         $.contextMenu('destroy', 'body');
         Model.initContextMenu();
       });
@@ -352,7 +352,7 @@ Model.abort = function(id) {
 }
 
 Model.editNewClick = function() {
-  $('#Edit').attr('class', 'new');
+  $('#Edit').attr('class', 'new tab');
   clear();
   $('#buttonDelete').prop('disabled', true);
   log("cdb_lu.js:editNewClick():end");
@@ -366,7 +366,7 @@ Model.editDeleteClick = function(id_textbox_id, serverAddress) {
         if(error.action === 'error'){
           alert(error.message);
         }else{
-          $('#Edit').attr('class', '');
+          $('#Edit').attr('class', 'tab');
           alert('Node successfully deleted');
         }
         log("cdb_lu.js:editDeleteClick():end");
@@ -392,7 +392,7 @@ Model.editSaveClick = function(id_textbox_id, serverAddress) {
         if(error.action === 'error'){
           alert(error.message)
         }else{
-          $('#Edit').attr('class', '');
+          $('#Edit').attr('class', 'tab');
           $('#buttonDelete').prop('disabled', false);
           alert('Node successfully saved');
         }
@@ -402,15 +402,16 @@ Model.editSaveClick = function(id_textbox_id, serverAddress) {
 }
 
 Model.editClearClick = function() {
-  $('#Edit').attr('class', '');
   clear();
   log("Model.editClearClick():end");
+  $('#Edit').attr('class', 'tab');
 }
 
 Model.editSplitClick = function() {
   alert('You are now editing new entry, don\'t forget to save it.');
   setNewId();
   $('#Edit').attr('class', 'new');
+  $('#Edit').attr('class', 'tab');
 }
 
 Model.editLUtoSynClick = function() {
@@ -624,8 +625,29 @@ Model.initContextMenu = function(dicts, openedDicts, code) {
       }
     }
   };
-  for(var index in dicts[shortcut].dicslookup){
-    var dict = dicts[shortcut].dicslookup[index];
+  log(dicts);
+  for(var dict in dicts) {
+    //log(dict); wncze2
+    dict = window.opener.Model.dicts_[dict];
+    log(dict);
+    if(dict.id != shortcut) {
+      menu.items.search.items[dict.id + '&searchin'] = {
+        'name': dict.name,
+        'id': dict.id,
+        'callback': function(key, options){
+          Model.searchIn_(key.split('&')[0], options);
+        }
+      };
+      menu.items.look_up.items[dict.id + '&lookupin'] = {
+        'name': dict.name,
+        'id': dict.id,
+        'type': 'checkbox'
+      };
+    }
+  }
+/*
+  for(var index in openedDicts[shortcut].dicslookup){
+    var dict = openedDicts[shortcut].dicslookup[index];
     menu.items.search.items[dict + '&searchin'] = {
       'name': dict,
       'callback': function(key, options){
@@ -636,7 +658,7 @@ Model.initContextMenu = function(dicts, openedDicts, code) {
       'name': dict,
       'type': 'checkbox',
     };
-  }
+  }*/
   for(var index in dicts[shortcut].eqtags){
     var dict = dicts[shortcut].eqtags[index];
     for(var jndex in dict.dics){
@@ -806,15 +828,20 @@ Model.saveCoordinations = function() {
   });
 }
 
+var iliVersions = new Set(["31", "30"]);
+
 Model.getIliID = function(id){
   id = id.toLowerCase();
   if(id.startsWith("eng")) {
       id = id.substring(3);
       version = id.substring(0, 2);
+      if(!iliVersions.has(version)) {
+        version = "31"
+      }
       id = id.substring(3);
       $.ajax({
           method: "GET",
-          url: Model.iliServerAddress_ +  "tab" + version + "?id=" + id,
+          url: iliServerAddress +  "/tab" + version + "?id=" + id,
           crossDomain: true
         }).done(function( msg ) {
           if(msg != ""){
