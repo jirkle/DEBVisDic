@@ -1,6 +1,9 @@
 package cz.fi.muni.pb138.DEBVisDic.service;
 
 import cz.fi.muni.pb138.DEBVisDic.service.interfaces.IliService;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,54 +51,55 @@ public class IliServiceImpl implements IliService {
     @Value(value = "classpath:iliFiles/changes-in-wn31.csv")
     private Resource iliCsvFile;
 
+
     @Override
     public String getIliTab31(String id) throws IOException {
-        return (id != null) ? getIliFromTabFile(id, iliTabFile31.getInputStream()) : null;
+        return getIliFromTabFile(id, iliTabFile31.getInputStream());
     }
 
     @Override
     public String getIliTab30(String id) throws IOException {
-        return (id != null) ? getIliFromTabFile(id, iliTabFile30.getInputStream()) : null;
+
+        return getIliFromTabFile(id, iliTabFile30.getInputStream());
     }
 
     @Override
     public String getIliTtl30(String id) throws IOException {
-        return (id != null) ? getIliFromTtlFile(id, iliTtlFile30.getInputStream()) : null;
+        return getIliFromTtl30File(id, iliTtlFile30.getInputStream());
     }
 
     @Override
     public String getIliTtl31(String id) throws IOException {
-        return (id != null) ? getIliFromOtherTtlFile(id, iliTtlFile31.getInputStream()) : null;
+        return getIliFrom31TtlFile(id, iliTtlFile31.getInputStream());
     }
 
     @Override
     public String getIliTtl13(String id) throws IOException {
-        return (id != null) ? getIliFromOtherTtlFile(id, iliTtlFile13.getInputStream()) : null;
+        return getIliFrom31TtlFile(id, iliTtlFile13.getInputStream());
     }
 
     @Override
     public String getIliTtlMap(String id) throws IOException {
-        return (id != null) ? getIliFromTtlFile(id, iliMapTtlFile.getInputStream()) : null;
+        return getIliFromTtl30File(id, iliMapTtlFile.getInputStream());
     }
 
     @Override
     public String getIliCsv(String id) throws IOException {
-        return (id != null) ? getIliFromCsvFile(id, iliCsvFile.getInputStream()) : null;
+        return getIliFromCsvFile(id, iliCsvFile.getInputStream());
     }
 
     @Override
     public String getIliMainTtl(String id) throws IOException {
-        return (id != null) ? getIliFromMainTtlFile(id, iliTtlFile.getInputStream()) : null;
+        return getIliFromMainTtlFile(id, iliTtlFile.getInputStream());
     }
 
     /**
-     * Private method for parsing ILI from specified file (this case == main ILI file),
-     * some could be reused for more files some could not
+     * Private method for parsing ILI from specified file (this case == main ILI file)
      *
      * @param id ID we are looking for in file
      * @param is Input stream from file
      * @return String value of ILI
-     * @throws IOException if something went wrong (e.g. file could not be opened)
+     * @throws IOException if something went wrong
      */
     private String getIliFromMainTtlFile(String id, InputStream is) throws IOException {
         BufferedReader br = null;
@@ -113,17 +117,19 @@ public class IliServiceImpl implements IliService {
                         return ili;
                     }
                 }
+
             }
+
         } catch (IOException e) {
-            logger.error("Service: " + e.getMessage());
             e.printStackTrace();
+            logger.error("Service: " + e.getMessage());
         } finally {
             if (br != null) {
                 try {
                     br.close();
                 } catch (IOException e) {
-                    logger.error("Service: " + e.getMessage());
                     e.printStackTrace();
+                    logger.error("Service: " + e.getMessage());
                 }
             }
         }
@@ -131,19 +137,19 @@ public class IliServiceImpl implements IliService {
     }
 
     /**
-     * Private method for parsing ILI from specified file (this case == CSV ILI file),
-     * some could be reused for more files some could not
+     * Private method for parsing ILI from specified file (this case == CSV ILI file)
      *
      * @param id ID we are looking for in file
      * @param is Input stream from file
      * @return String value of ILI
-     * @throws IOException if something went wrong (e.g. file could not be opened)
+     * @throws IOException if something went wrong
      */
     private String getIliFromCsvFile(String id, InputStream is) throws IOException {
         BufferedReader br = null;
 
         String line;
         try {
+
             br = new BufferedReader(new InputStreamReader(is));
             while ((line = br.readLine()) != null) {
                 String[] splitted = line.split(",");
@@ -153,15 +159,15 @@ public class IliServiceImpl implements IliService {
             }
 
         } catch (IOException e) {
-            logger.error("Service: " + e.getMessage());
             e.printStackTrace();
+            logger.error("Service: " + e.getMessage());
         } finally {
             if (br != null) {
                 try {
                     br.close();
                 } catch (IOException e) {
-                    logger.error("Service: " + e.getMessage());
                     e.printStackTrace();
+                    logger.error("Service: " + e.getMessage());
                 }
             }
         }
@@ -169,15 +175,14 @@ public class IliServiceImpl implements IliService {
     }
 
     /**
-     * Private method for parsing ILI from specified file (this case == TTL 3.0 ILI file),
-     * some could be reused for more files some could not
+     * Private method for parsing ILI from specified file (this case == TTL 3.0 ILI file)
      *
      * @param id ID we are looking for in file
      * @param is Input stream from file
      * @return String value of ILI
-     * @throws IOException if something went wrong (e.g. file could not be opened)
+     * @throws IOException if something went wrong
      */
-    private String getIliFromTtlFile(String id, InputStream is) throws IOException {
+    private String getIliFromTtl30File(String id, InputStream is) throws IOException {
         BufferedReader br = null;
 
         String line;
@@ -188,23 +193,40 @@ public class IliServiceImpl implements IliService {
                 if (line.startsWith("@") || line.startsWith("#") || line.isEmpty()) {
                     continue;
                 }
-                String[] splitted = line.split("\\s+");
+                String[] halfOfLine = line.split("#");
+
+                String[] splitted = halfOfLine[0].split("\\s+");
                 String[] fileId = splitted[2].split(":");
                 if (fileId[1].equals(id)) {
-                    return splitted[0].replace("<", "").replace(">", "");
+                    try {
+                        String[] words = halfOfLine[1].split(",\\s+");
+                        String tmpString = words[0].substring(1, words[0].length());
+                        words[0] = tmpString;
+                        String ili = splitted[0].replace("<", "").replace(">", "");
+                        JSONArray jsonArray = new JSONArray(words);
+                        String jsonString = new JSONObject()
+                                .put("ili", ili)
+                                .put("pwn31", splitted[2].split(":")[1])
+                                .put("words", jsonArray).toString();
+                        return jsonString;
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        logger.error("Service: " + e.getMessage());
+                    }
+                    return null;
                 }
             }
 
         } catch (IOException e) {
-            logger.error("Service: " + e.getMessage());
             e.printStackTrace();
+            logger.error("Service: " + e.getMessage());
         } finally {
             if (br != null) {
                 try {
                     br.close();
                 } catch (IOException e) {
-                    logger.error("Service: " + e.getMessage());
                     e.printStackTrace();
+                    logger.error("Service: " + e.getMessage());
                 }
             }
         }
@@ -212,42 +234,56 @@ public class IliServiceImpl implements IliService {
     }
 
     /**
-     * Private method for parsing ILI from specified file (this case == TTL 1.3 ILI file),
-     * some could be reused for more files some could not
+     * Private method for parsing ILI from specified file (this case == TTL 3.1 file)
      *
      * @param id ID we are looking for in file
      * @param is Input stream from file
      * @return String value of ILI
-     * @throws IOException if something went wrong (e.g. file could not be opened)
+     * @throws IOException if something went wrong
      */
-    private String getIliFromOtherTtlFile(String id, InputStream is) throws IOException {
+    private String getIliFrom31TtlFile(String id, InputStream is) throws IOException {
         BufferedReader br = null;
 
         String line;
         try {
-
             br = new BufferedReader(new InputStreamReader(is));
             while ((line = br.readLine()) != null) {
                 if (line.startsWith("@") || line.startsWith("#") || line.isEmpty()) {
                     continue;
                 }
-                String[] splitted = line.split("\\s+");
+                String[] halfOfLine = line.split("#");
+
+                String[] splitted = halfOfLine[0].split("\\s+");
                 String[] fileId = splitted[2].split(":");
                 if (fileId[1].equals(id)) {
-                    return splitted[0].split(":")[1];
+                    try {
+                        String[] words = halfOfLine[1].split(",\\s+");
+                        String tmpString = words[0].substring(1, words[0].length());
+                        words[0] = tmpString;
+                        JSONArray jsonArray = new JSONArray(words);
+                        String jsonString = new JSONObject()
+                                .put("ili", splitted[0].split(":")[1])
+                                .put("pwn31", splitted[2].split(":")[1])
+                                .put("words", jsonArray).toString();
+                        return jsonString;
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        logger.error("Service: " + e.getMessage());
+                    }
+                    return null;
                 }
             }
 
         } catch (IOException e) {
-            logger.error("Service: " + e.getMessage());
             e.printStackTrace();
+            logger.error("Service: " + e.getMessage());
         } finally {
             if (br != null) {
                 try {
                     br.close();
                 } catch (IOException e) {
-                    logger.error("Service: " + e.getMessage());
                     e.printStackTrace();
+                    logger.error("Service: " + e.getMessage());
                 }
             }
         }
@@ -255,19 +291,19 @@ public class IliServiceImpl implements IliService {
     }
 
     /**
-     * Private method for parsing ILI from specified file (this case == TAB ILI file),
-     * some could be reused for more files some could not
+     * Private method for parsing ILI from specified file (this case == TAB ILI file)
      *
      * @param id ID we are looking for in file
      * @param is Input stream from file
      * @return String value of ILI
-     * @throws IOException if something went wrong (e.g. file could not be opened)
+     * @throws IOException if something went wrong
      */
     private String getIliFromTabFile(String id, InputStream is) throws IOException {
         BufferedReader br = null;
 
         String line;
         try {
+
             br = new BufferedReader(new InputStreamReader(is));
             while ((line = br.readLine()) != null) {
                 String[] splitted = line.split("\t");
@@ -277,15 +313,15 @@ public class IliServiceImpl implements IliService {
             }
 
         } catch (IOException e) {
-            logger.error("Service: " + e.getMessage());
             e.printStackTrace();
+            logger.error("Service: " + e.getMessage());
         } finally {
             if (br != null) {
                 try {
                     br.close();
                 } catch (IOException e) {
-                    logger.error("Service: " + e.getMessage());
                     e.printStackTrace();
+                    logger.error("Service: " + e.getMessage());
                 }
             }
         }
