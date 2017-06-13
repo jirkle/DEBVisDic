@@ -30,6 +30,7 @@ For getting ILI from main .ttl file:
 https://localhost:8443/api/ili/mainttl
 
 For addresses and/or port modification please modify application.yml file:
+```
 server:
   contextPath: yourContextPath
   port: yourPortAddress
@@ -39,7 +40,7 @@ server:
     key-store-password: yourKeyStorePassword
     keyStoreType: yourKeyStroeType
     keyAlias: yourKeyAlias
-    
+ ```   
 Also self-signed certificate is used self-signed certificate, so for proper deploying to final server, certificate should be changed to signed by proper authority.
 
 
