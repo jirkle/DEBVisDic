@@ -6,28 +6,43 @@ Our main goal was to enable pairing of program used ID with proper ILI. Files wi
 Back-end default controller addresses are (all addresses requires request param id as string value):
 
 For getting ILI from version 3.0 .tab file:
-https://localhost:8443/ili/tab30 
+https://localhost:8443/api/ili/tab30 
 
 For getting ILI from version 3.1 .tab file:
-https://localhost:8443/ili/tab31
+https://localhost:8443/api/ili/tab31
 
 For getting ILI from version 1.3 .ttl file:
-https://localhost:8443/ili/ttl30
+https://localhost:8443/api/ili/ttl30
 
 For getting ILI from version 3.0 .ttl file:
-https://localhost:8443/ili/ttl30
+https://localhost:8443/api/ili/ttl30
 
 For getting ILI from version 3.1 .ttl file:
-https://localhost:8443/ili/ttl31
+https://localhost:8443/api/ili/ttl31
 
 For getting ILI from version ili-map.ttl file:
-https://localhost:8443/ili/ttlmap
+https://localhost:8443/api/ili/ttlmap
 
 For getting ILI from csv file:
-https://localhost:8443/ili/csv
+https://localhost:8443/api/ili/csv
 
 For getting ILI from main .ttl file:
-https://localhost:8443/ili/mainttl
+https://localhost:8443/api/ili/mainttl
+
+For addresses and/or port modification please modify application.yml file:
+server:
+  contextPath: yourContextPath
+  port: yourPortAddress
+  ssl:
+    enabled: true
+    key-store: classpath:yourKeyStore.p12
+    key-store-password: yourKeyStorePassword
+    keyStoreType: yourKeyStroeType
+    keyAlias: yourKeyAlias
+    
+Also self-signed certificate is used self-signed certificate, so for proper deploying to final server, certificate should be changed to signed by proper authority.
+
+
 
 Copyright 2017 Jiří Kletečka and Tomáš Kopecký, Masaryk University.
 
