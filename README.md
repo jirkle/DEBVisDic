@@ -43,7 +43,9 @@ server:
  ```   
 Also self-signed certificate is used self-signed certificate, so for proper deploying to final server, certificate should be changed to signed by proper authority.
 
+# Final reports
 
+[Jiří Kletečka](https://rawgit.com/jirkle/DEBVisDic/master/Zaverecne-zpravy/kletecka.html)
 
 Copyright 2017 Jiří Kletečka and Tomáš Kopecký, Masaryk University.
 
