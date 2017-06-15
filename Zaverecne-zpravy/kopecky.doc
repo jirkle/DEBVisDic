@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.2//CZ" "http://docbook.org/xml/4.2/docbookx.dtd">
+<article>
+  <title>Závìreèná zpráva</title>
+  <sect1>
+     <title>Rozšíøení editoru DEBVisDic</title>
+     <chapter>
+     	<title>Oficiální zadání:</title>
+     	<para>Rozšíøení editoru sémantických sítí DEBVisDic (http://deb.fi.muni.cz/clients-debvisdic.php). Existující webovou aplikaci doplòte o nové funkce a propojení s daty z https://github.com/globalwordnet/ili (textové soubory nebo RDF rozhraní http://ili.globalwordnet.org/ili/i345)</para>
+     </chapter>
+     <chapter>
+     	<title>Závìreèná zpráva:</title>
+     	<para>DEBVisDic je nástroj pro editaci a správu WordNets – lexikosémantických sítí, kde uzly reprezentují jednotlivá slova / slovní spojení a hrany pak relace (vztahy) mezi tìmito jednotkami. Na projektu DEBVisDic jsem spolupracoval s Jiøím Kleteèkou. Práci jsme si rozdìlili na klientskou a serverovou èást, kdy já jsem pracoval na serverové èásti projektu.</para>
+     	<para>Jedním z našich úkolù bylo získat k tìmto jednotkám (synsetùm) tzv. ili èíslování. Bylo využito souborù, které obsahují pøeklad pùvodních id na ili id a které jsou na internetu volnì dostupné. Pro zpøístupnìní tìchto souborù jsem vytvoøil server postavený na technologii Spring Boot. Tato technologie je snadno nastavitelná a umožnila rychlé vytvoøení prototypu a následné vyladìní aplikace.</para>
+     	<para>Serverová èást byla rozdìlena na jednotlivé vrstvy, kdy od sebe byly oddìleny metody MVC controllerù a servisní èást. Toto bylo provedeno z dùvodù vìtší pøehlednosti kódu a snadnìjší budoucí rozšiøitelnosti v pøípadì nutnosti pøidání nového souboru (aktualizovaná verze s ili èíslováním).</para>
+     	<para>Po vytvoøení prototypu bylo také zjištìno, že server funguje pøi lokálním volání, ale v pøípadì volání pøímo ze serverù DEBVisDic je nutné použít zabezpeèené pøipojení. Implementace zabezpeèeného pøipojení byla díky použití Spring Boot pomìrnì jednoduchá a po vygenerování self-signed certifikátu, byl server plnì funkèní i pøi použití zabezpeèené komunikace.</para>
+     	<para>Server pracuje se soubory, které si pøi startu nahraje do pamìti a následnì v nich vyhledává. Bohužel soubory jsou každý v trochu jiném formátu, a bylo proto nutné vytvoøit specifickou metodu prakticky pro každý soubor. V pøípadì, že klient potøebuje zobrazit pouze ili, bez doplòkových informací lze použít metody prohledávající sobory s koncovkou „.tab“, které obsahují pouze ili a id. Ili a server ili vrací jako prostý øetezìc. Pokud klient potøebuje více informací o hledaném slovu, je možné zavolat metody, které vyhledávají v souborech s koncovkou „.ttl“. Tyto soubory jsou složitìjší na parsování, ale obsahují více informací. Díky tomu je možné vytvoøit JSON ve tvaru:</para>
+     	<code>
+	{  
+		ili: "i8",  
+		pwn31: "300003131-a",  
+		words: [
+			"adducent",
+			"adductive",
+			"adducting"
+			]
+	}
+	</code>
+	<para>Díky tomu mùže klient pøistoupit k informacím, které potøebuje a následnì je zobrazit. Do budoucna je také v plánu server rozšíøit tak, aby umožòoval vyhledávání nejen pomocí ili, ale také pomocí slov. V tomto pøípadì by vracel data také ve vhodnì navrhnuté JSON podobì.</para>
+	</chapter>
+  </sect1>
+</article>

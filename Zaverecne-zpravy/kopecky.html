@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<head><title>Závěrečná zpráva</title>
+<style type="text/css">
+/********************************/
+/* start of styles in block.xsl */
+.formalpara-title {
+  font-weight: bold;
+}
+div.blockquote-title {
+  font-weight: bold;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+span.msgmain-title {
+  font-weight: bold;
+}
+span.msgsub-title {
+  font-weight: bold;
+}
+span.msgrel-title {
+  font-weight: bold;
+}
+div.msglevel, div.msgorig, div.msgaud {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+span.msglevel-title, span.msgorig-title, span.msgaud-title {
+  font-weight: bold;
+}
+div.msgexplan {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+span.msgexplan-title {
+  font-weight: bold;
+}
+/* end of styles in block.xsl */
+/********************************/
+/********************************/
+/* start of styles in autotoc.xsl */
+/* end of styles in autotoc.xsl */
+/********************************/
+/********************************/
+/* start of styles in formal.xsl */
+div.figure-title {
+  font-weight: bold;
+}
+div.example-title {
+  font-weight: bold;
+}
+div.equation-title {
+  font-weight: bold;
+}
+div.table-title {
+  font-weight: bold;
+}
+div.sidebar-title {
+  font-weight: bold;
+}
+/* end of styles in formal.xsl */
+/********************************/
+/********************************/
+/* start of styles in verbatim.xsl */
+div.programlisting {
+  white-space: pre;
+  font-family: monospace;
+}
+div.screen {
+  white-space: pre;
+  font-family: monospace;
+}
+div.synopsis {
+  white-space: pre;
+  font-family: monospace;
+}
+/* end of styles in verbatim.xsl */
+/********************************/
+/* footnote rule */
+hr.footnote-hr {
+  width: 100;
+}
+</style>
+<meta name="generator" content="Bluefish 2.2.10" /></head><body><section class="article" id="idm46565184909504"><div class="titlepage"><div><div><h2 class="title">Závěrečná zpráva</h2></div></div><hr/></div><div class="toc"><div class="toc-title">Table of Contents</div><ul class="toc"><li><span class="sect1"><a href="#idm46565184906000">Rozšíření editoru DEBVisDic</a></span></li></ul></div>
+  
+  <section class="sect1" id="idm46565184906001"><div class="titlepage"><div><div><h2 class="title" style="clear: both">Rozšíření editoru DEBVisDic</h2></div></div></div>
+     
+     <section class="chapter" id="idm46565184905168"><div class="titlepage"><div><div><h3 class="title">Kapitola 1. Oficiální zadání:</h3></div></div></div>
+     	
+     	<p>Rozšíření editoru sémantických sítí DEBVisDic (<a href="http://deb.fi.muni.cz/clients-debvisdic.php">http://deb.fi.muni.cz/clients-debvisdic.php</a>). Existující webovou aplikaci doplňte o nové funkce a propojení s daty z <a href="https://github.com/globalwordnet/ili">https://github.com/globalwordnet/ili</a> (textové soubory nebo RDF rozhraní <a href="http://ili.globalwordnet.org/ili/i345)">http://ili.globalwordnet.org/ili/i345)</a></p>
+     </section>
+     <section class="chapter" id="idm46565184903488"><div class="titlepage"><div><div><h3 class="title">Kapitola 2. Závěrečná zpráva:</h3></div></div></div>
+     	
+     	<p>DEBVisDic je nástroj pro editaci a správu WordNets – lexikosémantických sítí, kde uzly reprezentují jednotlivá slova / slovní spojení a hrany pak relace (vztahy) mezi těmito jednotkami. Na projektu DEBVisDic jsem spolupracoval s Jiřím Kletečkou. Práci jsme si rozdělili na klientskou a serverovou část, kdy já jsem pracoval na serverové části projektu.</p>
+     	<p>Jedním z našich úkolů bylo získat k těmto jednotkám (synsetům) tzv. ili číslování. Bylo využito souborů, které obsahují překlad původních id na ili id a které jsou na internetu volně dostupné. Pro zpřístupnění těchto souborů jsem vytvořil server postavený na technologii Spring Boot. Tato technologie je snadno nastavitelná a umožnila rychlé vytvoření prototypu a následné vyladění aplikace.</p>
+     	<p>Serverová část byla rozdělena na jednotlivé vrstvy, kdy od sebe byly odděleny metody MVC controllerů a servisní část. Toto bylo provedeno z důvodů větší přehlednosti kódu a snadnější budoucí rozšiřitelnosti v případě nutnosti přidání nového souboru (aktualizovaná verze s ili číslováním).</p>
+     	<p>Po vytvoření prototypu bylo také zjištěno, že server funguje při lokálním volání, ale v případě volání přímo ze serverů DEBVisDic je nutné použít zabezpečené připojení. Implementace zabezpečeného připojení byla díky použití Spring Boot poměrně jednoduchá a po vygenerování self-signed certifikátu, byl server plně funkční i při použití zabezpečené komunikace.</p>
+     	<p>Server pracuje se soubory, které si při startu nahraje do paměti a následně v nich vyhledává. Bohužel soubory jsou každý v trochu jiném formátu, a bylo proto nutné vytvořit specifickou metodu prakticky pro každý soubor. V případě, že klient potřebuje zobrazit pouze ili, bez doplňkových informací lze použít metody prohledávající sobory s koncovkou „.tab“, které obsahují pouze ili a id. Ili a server ili vrací jako prostý řetezěc. Pokud klient potřebuje více informací o hledaném slovu, je možné zavolat metody, které vyhledávají v souborech s koncovkou „.ttl“. Tyto soubory jsou složitější na parsování, ale obsahují více informací. Díky tomu je možné vytvořit JSON ve tvaru:</p>
+     	<code>
+	{  
+		ili: "i8",  
+		pwn31: "300003131-a",  
+		words: [
+			"adducent",
+			"adductive",
+			"adducting"
+			]
+	}
+	</code>
+     	<p>Díky tomu může klient přistoupit k informacím, které potřebuje a následně je zobrazit. Do budoucna je také v plánu server rozšířit tak, aby umožňoval vyhledávání nejen pomocí ili, ale také pomocí slov. V tomto případě by vracel data také ve vhodně navrhnuté JSON podobě.</p>
+     </section>
+  </section>
+</section></body></html>
