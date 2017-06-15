@@ -45,7 +45,7 @@ Also self-signed certificate is used self-signed certificate, so for proper depl
 
 # Final reports
 
-[Jiří Kletečka](https://rawgit.com/jirkle/DEBVisDic/master/Zaverecne-zpravy/kletecka.html)
+[Jiří Kletečka](https://rawgit.com/jirkle/DEBVisDic/master/Zaverecne-zpravy/kletecka.html), [Tomáš Kopecký](https://rawgit.com/jirkle/DEBVisDic/master/Zaverecne-zpravy/kopecky.html)
 
 Copyright 2017 Jiří Kletečka and Tomáš Kopecký, Masaryk University.
 
