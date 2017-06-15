@@ -41,7 +41,7 @@ server:
     keyStoreType: yourKeyStroeType
     keyAlias: yourKeyAlias
  ```   
-Also self-signed certificate is used self-signed certificate, so for proper deploying to final server, certificate should be changed to signed by proper authority.
+Also self-signed certificate is used, so for proper deploying to final server, certificate should be changed to signed by proper authority.
 
 # Final reports
 
