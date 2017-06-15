@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml"><head><title>Závěrečná zpráva</title>
+<style type="text/css">
+
+
+/********************************/
+/* start of styles in block.xsl */
+
+.formalpara-title {
+  font-weight: bold;
+}
+
+div.blockquote-title {
+  font-weight: bold;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+span.msgmain-title {
+  font-weight: bold;
+}
+
+span.msgsub-title {
+  font-weight: bold;
+}
+
+span.msgrel-title {
+  font-weight: bold;
+}
+
+div.msglevel, div.msgorig, div.msgaud {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+span.msglevel-title, span.msgorig-title, span.msgaud-title {
+  font-weight: bold;
+}
+
+div.msgexplan {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+span.msgexplan-title {
+  font-weight: bold;
+}
+
+/* end of styles in block.xsl */
+/********************************/
+
+/********************************/
+/* start of styles in autotoc.xsl */
+
+
+/* end of styles in autotoc.xsl */
+/********************************/
+
+/********************************/
+/* start of styles in formal.xsl */
+
+div.figure-title {
+  font-weight: bold;
+}
+
+div.example-title {
+  font-weight: bold;
+}
+
+div.equation-title {
+  font-weight: bold;
+}
+
+div.table-title {
+  font-weight: bold;
+}
+
+div.sidebar-title {
+  font-weight: bold;
+}
+
+
+/* end of styles in formal.xsl */
+/********************************/
+
+/********************************/
+/* start of styles in verbatim.xsl */
+
+div.programlisting {
+  white-space: pre;
+  font-family: monospace;
+}
+
+div.screen {
+  white-space: pre;
+  font-family: monospace;
+}
+
+div.synopsis {
+  white-space: pre;
+  font-family: monospace;
+}
+
+/* end of styles in verbatim.xsl */
+/********************************/
+
+/* footnote rule */
+hr.footnote-hr {
+  width: 100;
+}
+
+</style>
+<meta name="generator" content="Bluefish 2.2.7" /></head><body><section class="article" id="idm46565184909504"><div class="titlepage"><div><div><h2 class="title">Závěrečná zpráva</h2></div></div><hr/></div><div class="toc"><div class="toc-title">Table of Contents</div><ul class="toc"><li><span class="sect1"><a href="#idm46565184906000">Rozšíření editoru DEBVisDic</a></span></li></ul></div>
+  
+  <section class="sect1" id="idm46565184906000"><div class="titlepage"><div><div><h2 class="title" style="clear: both">Rozšíření editoru DEBVisDic</h2></div></div></div>
+     
+     <section class="chapter" id="idm46565184905168"><div class="titlepage"><div><div><h3 class="title">Chapter 1. Oficiální zadání:</h3></div></div></div>
+     	
+     	<p>Rozšíření editoru sémantických sítí DEBVisDic (http://deb.fi.muni.cz/clients-debvisdic.php). Existující webovou aplikaci doplňte o nové funkce a propojení s daty z https://github.com/globalwordnet/ili (textové soubory nebo RDF rozhraní http://ili.globalwordnet.org/ili/i345)</p>
+     </section>
+     <section class="chapter" id="idm46565184903488"><div class="titlepage"><div><div><h3 class="title">Chapter 2. Závěrečná zpráva:</h3></div></div></div>
+     	
+     	<p>DEBVisDic je nástroj pro editaci a správu WordNets – lexikosémantických sítí, kde uzly reprezentují jednotlivá slova / slovní spojení a hrany pak relace (vztahy) mezi těmito jednotkami. Na projektu DEBVisDic jsem spolupracoval s Tomášem Kopeckým. Práci jsme si rozdělili na klientskou a serverovou část a já se ve své části jsem se zabýval vylepšeními klienta.</p>
+     	<p>Jedním z našich úkolů bylo získat k těmto jednotkám (synsetům) tzv. ili číslování. Bylo využito souborů, které obsahují překlad původních id na ili id a které jsou na internetu volně dostupné. Nad těmito soubory byl vytvořen server s rozhraním, které k zadanému id vrací jeho ili ekvivalent. V budoucnu je plánováno další rozšíření serveru, které umožní vyhledávání ili id a WordNet id také na základě slov.</p>
+     	<p>Mým úkolem bylo napojit klientské uživatelské rozraní na tento server. Vše je uděláno tak, že při získávání synsetů se serveru dotazuji, zda nezná zadané WordNet id a ten mi v případě kladné odpovědi zašle odpovídající ili id. Já ho pak zobrazím uživateli. Zároveň s tím je ili číslo přidáno k synsetu a uloženo na server, takže se při příštím použití již nedohledává.</p>
+     	<p>Dále jsem upravil záložku s možnostmi editace – přidal jsem select box pro výběr typu relací. Tímto vylepšením uživatelům stačí vybrat daný typ relace a nemusí si již pamatovat její název.</p>
+     	<p>V další úpravě jsem se zaměřil na kontextové menu. Zde se zobrazuje možnost vyhledat synset v jiné jazykové mutaci, případně provádět automaticky simultánní dotazy nad více jazykovými mutacemi. Dříve menu obsahovalo velké množství nejrůznějších jazyků, i když v systému nebyly přítomné. Nyní tedy obsahuje už jen jazykové mutace WordNetů, které se v nástroji DEBVisDic přímo nacházejí.</p>
+     	<p>Dále jsem upravil vzhled uživatelského rozhraní – zvětšil jsem okno se zobrazením výsledků, v záložce editace upravil rozmístění a odsazení prvků. Zde jsem také vyjmul ovládací tlačítka ze scrollovatelné části a díky tomu jsou vždy zobrazené a uživateli dostupné. Posední úpravou vzhledu byla změna velikosti některých formulářových polí, tak aby více odpovídali velikosti vkládaných informací, a doplnění placeholderů, kteří v případě prázdného pole napovídají, jaká informace je požadována.</p>
+     	<p>V průběhu používání nástroje se objevily také drobné chyby, jež bylo potřeba opravit. Například při uložení editace synsetu nedošlo k obnovení preview, který stále zobrazoval původní hodnoty. Tuto chybu jsem opravil současně s druhou chybou, která se týkala možnosti simultánního vyhledání jednoho synsetu ve více jazykových mutacích. Chyba spočívala v tom, že pokud synset v daném jazyce nebyl nalezen, zůstal v dané jazykové mutaci zobrazen poslední úspěšně nalezený, což (vzhledem k tomu, že se s vyhledávaným neshodoval) mohlo být matoucí.</p>
+     </section>
+  </section>
+</section></body></html>

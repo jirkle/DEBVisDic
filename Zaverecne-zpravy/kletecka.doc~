@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.2//CZ" "http://docbook.org/xml/4.2/docbookx.dtd">
+<article>
+  <title>Závěrečná zpráva</title>
+  <sect1>
+     <title>Rozšíření editoru DEBVisDic</title>
+     <chapter>
+     	<title>Oficiální zadání:</title>
+     	<para>Rozšíření editoru sémantických sítí DEBVisDic (http://deb.fi.muni.cz/clients-debvisdic.php). Existující webovou aplikaci doplňte o nové funkce a propojení s daty z https://github.com/globalwordnet/ili (textové soubory nebo RDF rozhraní http://ili.globalwordnet.org/ili/i345)</para>
+     </chapter>
+     <chapter>
+     	<title>Závěrečná zpráva:</title>
+     	<para>DEBVisDic je nástroj pro editaci a správu WordNets – lexikosémantických sítí, kde uzly reprezentují jednotlivá slova / slovní spojení a hrany pak relace (vztahy) mezi těmito jednotkami. Na projektu DEBVisDic jsem spolupracoval s Tomášem Kopeckým. Práci jsme si rozdělili na klientskou a serverovou část a já se ve své části jsem se zabýval vylepšeními klienta.</para>
+     	<para>Jedním z našich úkolů bylo získat k těmto jednotkám (synsetům) tzv. ili číslování. Bylo využito souborů, které obsahují překlad původních id na ili id a které jsou na internetu volně dostupné. Nad těmito soubory byl vytvořen server s rozhraním, které k zadanému id vrací jeho ili ekvivalent. V budoucnu je plánováno další rozšíření serveru, které umožní vyhledávání ili id a WordNet id také na základě slov.</para>
+     	<para>Mým úkolem bylo napojit klientské uživatelské rozraní na tento server. Vše je uděláno tak, že při získávání synsetů se serveru dotazuji, zda nezná zadané WordNet id a ten mi v případě kladné odpovědi zašle odpovídající ili id. Já ho pak zobrazím uživateli. Zároveň s tím je ili číslo přidáno k synsetu a uloženo na server, takže se při příštím použití již nedohledává.</para>
+     	<para>Dále jsem upravil záložku s možnostmi editace – přidal jsem select box pro výběr typu relací. Tímto vylepšením uživatelům stačí vybrat daný typ relace a nemusí si již pamatovat její název.</para>
+     	<para>V další úpravě jsem se zaměřil na kontextové menu. Zde se zobrazuje možnost vyhledat synset v jiné jazykové mutaci, případně provádět automaticky simultánní dotazy nad více jazykovými mutacemi. Dříve menu obsahovalo velké množství nejrůznějších jazyků, i když v systému nebyly přítomné. Nyní tedy obsahuje už jen jazykové mutace WordNetů, které se v nástroji DEBVisDic přímo nacházejí.</para>
+     	<para>Dále jsem upravil vzhled uživatelského rozhraní – zvětšil jsem okno se zobrazením výsledků, v záložce editace upravil rozmístění a odsazení prvků. Zde jsem také vyjmul ovládací tlačítka ze scrollovatelné části a díky tomu jsou vždy zobrazené a uživateli dostupné. Posední úpravou vzhledu byla změna velikosti některých formulářových polí, tak aby více odpovídali velikosti vkládaných informací, a doplnění placeholderů, kteří v případě prázdného pole napovídají, jaká informace je požadována.</para>
+     	<para>V průběhu používání nástroje se objevily také drobné chyby, jež bylo potřeba opravit. Například při uložení editace synsetu nedošlo k obnovení preview, který stále zobrazoval původní hodnoty. Tuto chybu jsem opravil současně s druhou chybou, která se týkala možnosti simultánního vyhledání jednoho synsetu ve více jazykových mutacích. Chyba spočívala v tom, že pokud synset v daném jazyce nebyl nalezen, zůstal v dané jazykové mutaci zobrazen poslední úspěšně nalezený, což (vzhledem k tomu, že se s vyhledávaným neshodoval) mohlo být matoucí.</para>
+     </chapter>
+  </sect1>
+</article>
